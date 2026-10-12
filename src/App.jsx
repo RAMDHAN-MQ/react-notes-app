@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import Nav from "./components/Nav";
+import TambahNote from "./components/TambahNote";
+import Note from "./components/Note";
 
 export default function App() {
   const [note, setNote] = useState(() => {
@@ -78,114 +81,5 @@ export default function App() {
         </div>
       </div>
     </div>
-  );
-}
-
-function Nav({ isDark, setIsDark }) {
-  return (
-    <nav className="flex justify-between pt-6 items-center">
-      <h1 className="text-4xl font-bold">Notes</h1>
-      <Button
-        text={isDark ? "Light" : "Dark"}
-        jenis={isDark ? "light" : "dark"}
-        onClick={() => setIsDark(!isDark)}
-      />
-    </nav>
-  );
-}
-
-function Note({ data, onHapusNote, onFilterEdit }) {
-  return (
-    <div className="note p-4 bg-amber-300 rounded-2xl flex flex-col justify-between min-h-70 max-h-70 dark:text-coklat dark:bg-gray-600">
-      <div className="isi wrap-break-word">
-        <span className="text-xl">{data.text}</span>
-      </div>
-      <div className="footer flex gap-3 items-center justify-between">
-        <span>{data.date}</span>
-        <div className="flex gap-2">
-          <Button text={"Edit"} jenis={"action"} onClick={onFilterEdit} />
-          <Button text={"Hapus"} jenis={"action"} onClick={onHapusNote} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TambahNote({ onTambahNote, isEdit, onEditNote, edit }) {
-  const [text, setText] = useState(() => {
-    return edit ? edit.text : "";
-  });
-
-  const max = 100 - text.length;
-
-  function handleKirimNote() {
-    if (text.length === 0) return;
-    if (isEdit) {
-      onEditNote(text);
-    } else {
-      onTambahNote(text);
-    }
-    setText("");
-  }
-
-  function handleBtnBatal() {
-    location.reload();
-  }
-
-  return (
-    <div className="note min-w-0 p-4 bg-biru rounded-2xl flex flex-col justify-between min-h-70 max-h-70 dark:text-gray-800 dark:bg-cyan-800">
-      <div className="isi wrap-break-word">
-        <textarea
-          rows={7}
-          className="w-full text-xl outline-0 resize-none dark:text-coklat"
-          placeholder="Ketikan Sesuatu..."
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          maxLength={100}
-        ></textarea>
-      </div>
-      <div className="footer flex gap-3 items-center justify-between">
-        <span className="dark:text-coklat">{max}</span>
-        <div className="flex gap-2">
-          <Button
-            text={"Batal"}
-            jenis={"action"}
-            display={edit ? "" : "hidden"}
-            onClick={handleBtnBatal}
-          />
-          <Button
-            text={edit ? "Update" : "Simpan"}
-            jenis={"action"}
-            onClick={handleKirimNote}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Button({ text, jenis, onClick, display }) {
-  let warna;
-  switch (jenis) {
-    case "action":
-      warna =
-        "text-gray-800 border active:bg-gray-800 active:text-coklat dark:border-coklat dark:text-coklat";
-      break;
-    case "dark":
-      warna = "text-coklat bg-gray-800";
-      break;
-    case "light":
-      warna = "text-gray-800 bg-coklat";
-      break;
-    default:
-      warna = "";
-  }
-  return (
-    <button
-      className={`py-2 px-3 rounded cursor-pointer ${warna} ${display}`}
-      onClick={onClick}
-    >
-      {text}
-    </button>
   );
 }
